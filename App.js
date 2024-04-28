@@ -7,7 +7,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 
-import { DataTable, List } from 'react-native-paper';
+import { DataTable, HelperText, List } from 'react-native-paper';
 
 import card1 from './assets/images/icons/hospital-geral.png'
 import card2 from './assets/images/icons/poste-de-sinalizacao.png'
@@ -18,6 +18,7 @@ import card6 from './assets/images/icons/clinica.png'
 import card7 from './assets/images/icons/unidade-pronto-atendimento.png'
 import card8 from './assets/images/icons/caixa-de-primeiros-socorros.png'
 import card9 from './assets/images/icons/recem-nascido.png'
+import { findByName } from './function/Service'; 
 
 const Stack = createStackNavigator();
 const cardsEX = [
@@ -33,7 +34,17 @@ function MainScreen({ navigation }){
   const [value, setValue] = useState('');
 
   const nameCards = ['Hospital Geral', 'Posto de Saúde', 'Clínica da Família', 'Farmácia', 'Hospital Particular', 'Clínica', 'UPA', 'Pronto Socorro Geral', 'Centro de Parto']
+
   const imageCards = [card1, card2, card3, card4, card5, card6, card7, card8, card9]  
+
+  const handleChangeText = (inputText) => {
+    const result = findByName(value)
+    {/*
+    console.log(value)
+    console.log(result)
+    */}
+    navigation.navigate('ListingScreen', {result});
+  };
 
   return (
     <ImageBackground source={require('./assets/images/fundo.jpg')} resizeMode='cover' style={{flex: 1}}>      
@@ -47,13 +58,12 @@ function MainScreen({ navigation }){
           <TextInput
             style={styles.input}
             onChangeText={text => setValue(text)}
-            value={value}
             placeholder="Busque pelos estabelecimentos"
           />
 
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.navigate('ListingScreen')}
+            onPress={handleChangeText}
           >
             <Text style={styles.buttonText}>Procurar</Text>
           </TouchableOpacity>
@@ -77,7 +87,18 @@ function MainScreen({ navigation }){
   );
 }
 
-function ListingScreen({ navigation }){
+function ListingScreen({ route, navigation }){
+  {/*
+  console.log(route.params)
+  console.log(route.params.result)
+
+  let resultJSON = JSON.parse(route.params.result)
+  console.log(resultJSON[0].nome)
+  console.log(resultJSON[1].nome)
+  console.log(resultJSON.cidade)
+  */}
+  let responseJson = JSON.parse(route.params.result)
+ 
   return (
     <View style={stylesListingScreen.listingContainer}>
       <View style={stylesListingScreen.logoContainer}>
@@ -93,13 +114,18 @@ function ListingScreen({ navigation }){
       </View>
       <View style={{marginTop: 215, paddingLeft: 20, paddingRight: 20}} >
         <FlatList
-          data={cardsEX} style={{ height: '100%' }}
+          data={responseJson} style={{ height: '100%' }}
           renderItem={({item, index}) => (
             <TouchableOpacity 
               key={`${item.name}-${index}`}
               onPress={() => navigation.navigate('DisplayScreen', {
                 name: item.name,
-                address: item.address
+                unity: item.unity,
+                state: item.state,
+                neighborhood: item.neighborhood,
+                address: item.address,
+                phone: item.phone,
+                time: item.time
               })}
               style={{ 
                 marginBottom: 10, 
@@ -128,8 +154,13 @@ function ListingScreen({ navigation }){
 }
 
 function DisplayScreen({ route }){
-  const name = route.params.name
-  const address = route.params.address
+  let name = route.params.name
+  let unity = route.params.unity
+  let state = route.params.state
+  let neighborhood = route.params.neighborhood
+  let address = route.params.address
+  let phone = route.params.phone
+  let time = route.params.time
 
   return (
     <View style={{backgroundColor: '#c4ffff'}}>
@@ -150,7 +181,7 @@ function DisplayScreen({ route }){
           <DataTable.Title style={{}}>TIPO</DataTable.Title> 
           <DataTable.Cell style={stylesDisplayScreen.tableCell}>
             <Text style={stylesDisplayScreen.tableText}>
-              {`POSTO DE SAÚDE`}
+              {unity}
             </Text>
           </DataTable.Cell> 
         </DataTable.Header> 
@@ -159,16 +190,16 @@ function DisplayScreen({ route }){
           <DataTable.Title>ESTADO</DataTable.Title> 
           <DataTable.Cell style={stylesDisplayScreen.tableCell}>
             <Text style={stylesDisplayScreen.tableText}>
-              {`RIO DE JANEIRO`}
+              {state}
             </Text>
           </DataTable.Cell> 
         </DataTable.Header> 
 
         <DataTable.Header style={stylesDisplayScreen.tableHeader}> 
-          <DataTable.Title>CIDADE</DataTable.Title> 
+          <DataTable.Title>BAIRRO</DataTable.Title> 
           <DataTable.Cell style={stylesDisplayScreen.tableCell}>
             <Text style={stylesDisplayScreen.tableText}>
-              {`RIO DE JANEIRO`}
+              {neighborhood}
             </Text>
           </DataTable.Cell> 
         </DataTable.Header> 
@@ -186,7 +217,7 @@ function DisplayScreen({ route }){
           <DataTable.Title>TELEFONE</DataTable.Title> 
           <DataTable.Cell style={stylesDisplayScreen.tableCell}>
             <Text style={stylesDisplayScreen.tableText}>
-              {`2124843994`}
+              {phone}
             </Text>
           </DataTable.Cell> 
         </DataTable.Header> 
@@ -195,7 +226,7 @@ function DisplayScreen({ route }){
           <DataTable.Title>HORÁRIOS</DataTable.Title> 
           <DataTable.Cell style={stylesDisplayScreen.tableCell}>
             <Text style={stylesDisplayScreen.tableText}>
-              {`24 Hrs`}
+              {time}
             </Text>
           </DataTable.Cell> 
         </DataTable.Header> 
@@ -354,4 +385,4 @@ const styles = StyleSheet.create({
     height: 32,
     tintColor: '#000'
   },
-});
+})
