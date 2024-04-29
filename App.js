@@ -1,7 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, Image, FlatList, ImageBackground } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, Image, FlatList, ImageBackground, Alert, Modal, Pressable } from 'react-native';
 import React, { useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
+import {Picker} from '@react-native-picker/picker';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -33,18 +34,69 @@ const cardsEX = [
 function MainScreen({ navigation }){
   const [value, setValue] = useState('');
 
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const [selectedValue, setSelectedValue] = useState([]);
+
+  const [pickerValues, setPickerValues] = useState(['', '', '']);
+
   const nameCards = ['Hospital Geral', 'Posto de Saúde', 'Clínica da Família', 'Farmácia', 'Hospital Particular', 'Clínica', 'UPA', 'Pronto Socorro Geral', 'Centro de Parto']
 
   const imageCards = [card1, card2, card3, card4, card5, card6, card7, card8, card9]  
 
+  let pickers = ['', '', '']
+
   const handleChangeText = (inputText) => {
-    const result = findByName(value)
-    {/*
-    console.log(value)
-    console.log(result)
-    */}
+    console.log(pickers)
+    const result = findByName(value, pickers)
     navigation.navigate('ListingScreen', {result});
-  };
+  }
+
+  const resetPickerValues = () => {
+    setModalVisible(!modalVisible)
+    pickers = ['', '', '']
+  }
+
+  const handlePickerValues = (pickerText) => {
+    if(pickerText[0] == '1'){
+      if(pickerText == '1_HOMECARE'){
+        pickerText = '1_HOME CARE'
+      }
+      pickers[0] = pickerText.replace('1_','') // type
+
+    }else if(pickerText[0] == '2'){
+      pickers[1] = pickerText.replace('2_','') // state
+
+    }else if(pickerText[0] == '3'){
+      pickers[2] = pickerText.replace('3_','') // time
+    }
+    console.log(pickers)
+  }
+
+  {/*
+  const filterPopup = () => 
+    Alert.alert(
+      "Filtros",
+      <View>
+        <Text>Selecione uma opção:</Text>
+        <Picker
+          selectedValue={selectedValue}
+          onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
+        >
+          <Picker.Item label="Java" value="java" />
+          <Picker.Item label="JavaScript" value="js" />
+        </Picker>
+      </View>,
+      [
+        {
+          text: "Cancelar",
+          onPress: () => console.log("Botão Cancelar pressionado"),
+          style: "cancel"
+        },
+        { text: "OK", onPress: () => console.log("Botão OK pressionado") }
+      ]
+    )
+  */}
 
   return (
     <ImageBackground source={require('./assets/images/fundo.jpg')} resizeMode='cover' style={{flex: 1}}>      
@@ -68,10 +120,119 @@ function MainScreen({ navigation }){
             <Text style={styles.buttonText}>Procurar</Text>
           </TouchableOpacity>
 
-          <View style={styles.filterContainer}>
+          {/*
+          <TouchableOpacity style={styles.filterContainer} onPress={filterPopup}>
             <Ionicons name="filter" size={24} color="black" />
             <Text style={styles.filterText}>Filtrar</Text>
-          </View>
+          </TouchableOpacity>
+          */}
+
+          <Pressable
+            style={[stylesFilterScreen.button, stylesFilterScreen.buttonOpen]}
+            onPress={() => setModalVisible(true)}
+          >
+            <Ionicons name="filter" size={24} color="black" />
+            <Text style={stylesFilterScreen.textStyle}>Filtrar</Text>
+          </Pressable>
+
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              setModalVisible(!modalVisible);
+            }}
+          >
+            <View style={stylesFilterScreen.centeredView}>
+              <View style={stylesFilterScreen.modalView}>
+                <Text style={stylesFilterScreen.modalText}>Filtros:</Text>
+                <Picker 
+                  selectedValue={selectedValue} 
+                  style={{ height: 50, width: 250 }} 
+                  mode={"dialog"} 
+                  onValueChange={handlePickerValues}
+                  /*onValueChange={(itemValue) => setSelectedValue(itemValue)} */
+                > 
+                  <Picker.Item label="Tipo" value="" />
+                  <Picker.Item label="Centro de Parto" value="1_CENTRO DE PARTO" /> 
+                  <Picker.Item label="Centro de Saúde" value="1_CENTRO DE SAÚDE" /> 
+                  <Picker.Item label="Farmácia" value="1_FARMÁCIA" />
+                  <Picker.Item label="Hospital" value="1_HOSPITAL" /> 
+                  <Picker.Item label="Policlínica" value="1_POLICLÍNICA" />
+                  <Picker.Item label="Posto de Saúde" value="1_POSTO DE SAÚDE" />
+                  <Picker.Item label="Pronto Atendimento" value="1_PRONTO ATENDIMENTO" />
+                  <Picker.Item label="Pronto Socorro" value="1_PRONTO SOCORRO" />
+                  <Picker.Item label="Home Care" value="1_HOMECARE" />
+                </Picker>
+                <Picker 
+                  selectedValue={selectedValue} 
+                  style={{ height: 50, width: 250 }} 
+                  mode={"dialog"} 
+                  onValueChange={handlePickerValues} 
+                > 
+                  <Picker.Item label="Estado" value="" />
+                  <Picker.Item label="Rondônia" value="2_RONDÔNIA" /> 
+                  <Picker.Item label="Acre" value="2_ACRE" /> 
+                  <Picker.Item label="Amazonas" value="2_AMAZONAS" /> 
+                  <Picker.Item label="Roraima" value="2_RORAIMA" /> 
+                  <Picker.Item label="Pará" value="2_PARÁ" /> 
+                  <Picker.Item label="Amapá" value="2_AMAPÁ" />
+                  <Picker.Item label="Tocantis" value="2_TOCANTIS" />
+                  <Picker.Item label="Maranhão" value="2_MARANHÃO" />
+                  <Picker.Item label="Piauí" value="2_PIAUÍ" />
+                  <Picker.Item label="Ceará" value="2_CEARÁ" />
+                  <Picker.Item label="Rio Grande do Norte" value="2_RIO GRANDE DO NORTE" />
+                  <Picker.Item label="Paraíba" value="2_PARAÍBA" />
+                  <Picker.Item label="Pernambuco" value="2_PERNAMBUCO" />
+                  <Picker.Item label="Alagoas" value="2_ALAGOAS" />
+                  <Picker.Item label="Sergipe" value="2_SERGIPE" />
+                  <Picker.Item label="Bahia" value="2_BAHIA" />
+                  <Picker.Item label="Minas Gerais" value="2_MINAS GERAIS" />
+                  <Picker.Item label="Espírito Santo" value="2_ESPÍRITO SANTO" />
+                  <Picker.Item label="Rio de Janeiro" value="2_RIO DE JANEIRO" />
+                  <Picker.Item label="São Paulo" value="2_SÃO PAULO" />
+                  <Picker.Item label="Paraná" value="2_PARANÁ" />
+                  <Picker.Item label="Santa Catarina" value="2_SANTA CATARINA" />
+                  <Picker.Item label="Rio Grande do Sul" value="2_RIO GRANDE DO SUL" />
+                  <Picker.Item label="Mato Grosso do Sul" value="2_MATO GROSSO DO SUL" />
+                  <Picker.Item label="Mato Grosso" value="2_MATO GROSSO" />
+                  <Picker.Item label="Goiás" value="2_GOIÁS" />
+                  <Picker.Item label="Distrito Federal" value="2_DISTRITO FEDERAL" />
+                </Picker>
+                <Picker 
+                  selectedValue={selectedValue} 
+                  style={{ height: 50, width: 250 }} 
+                  mode={"dialog"} 
+                  onValueChange={handlePickerValues} 
+                > 
+                  <Picker.Item label="Turno" value="" />
+                  <Picker.Item label="Manhã" value="3_SOMENTE MANHÃ" /> 
+                  <Picker.Item label="Tarde" value="3_SOMENTE TARDE" /> 
+                  <Picker.Item label="Noite" value="3_SOMENTE NOITE" /> 
+                  <Picker.Item label="Manhã e Tarde" value="3_MANHÃ E TARDE" /> 
+                  <Picker.Item label="Manhã, Tarde e Noite" value="3_MANHÃ, TARDE E NOITE" /> 
+                  <Picker.Item label="24 Horas" value="3_24 HORAS" />
+                  <Picker.Item label="Turno Intermitente" value="3_TURNOS INTERMITENTES" />
+                </Picker>
+                <View style={{ flexDirection: 'row' }}>
+                  <Pressable
+                    style={[stylesFilterScreen.button, stylesFilterScreen.buttonClose]}
+                    onPress={() => {
+                      setModalVisible(!modalVisible)
+                    }}
+                  >
+                    <Text style={stylesFilterScreen.textInternStyle}>OK</Text>
+                  </Pressable>
+                  <Pressable
+                    style={[stylesFilterScreen.button, stylesFilterScreen.buttonClose]}
+                    onPress={resetPickerValues}
+                  >
+                    <Text style={stylesFilterScreen.textInternStyle}>Cancelar</Text>
+                  </Pressable>
+                </View>
+              </View>
+            </View>
+          </Modal>
 
           <View style={styles.grid}>
             {nameCards.map((nameCard,index) => (
@@ -88,17 +249,7 @@ function MainScreen({ navigation }){
 }
 
 function ListingScreen({ route, navigation }){
-  {/*
-  console.log(route.params)
-  console.log(route.params.result)
-
-  let resultJSON = JSON.parse(route.params.result)
-  console.log(resultJSON[0].nome)
-  console.log(resultJSON[1].nome)
-  console.log(resultJSON.cidade)
-  */}
   let responseJson = JSON.parse(route.params.result)
- 
   return (
     <View style={stylesListingScreen.listingContainer}>
       <View style={stylesListingScreen.logoContainer}>
@@ -246,7 +397,59 @@ export default function App() {
       </Stack.Navigator>
     </NavigationContainer>
   );
-}
+};
+
+const stylesFilterScreen = StyleSheet.create({
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+  },
+  buttonOpen: {
+    backgroundColor: "transparent",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  textStyle: {
+    color: "#000",
+    fontWeight: "bold",
+    textAlign: "center",
+    marginLeft: 5
+  },
+  textInternStyle: {
+    color: "#000",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center"
+  }
+});
 
 const stylesDisplayScreen = StyleSheet.create({
   tableHeader: {

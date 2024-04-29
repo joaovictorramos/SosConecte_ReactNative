@@ -11,8 +11,20 @@ const prontoatendimento = require('../resource/cnes_estabelecimentos_prontoatend
 const prontosocorro     = require('../resource/cnes_estabelecimentos_prontosocorrogeral.json')
 
 
-export const findByName = (text) => {
+export const findByName = (text, pickers) => {
     let cnesList = []
+    cnesList = mappingToJson(text, cnesList, pickers)
+
+    var cnesJson = JSON.stringify(cnesList)
+    return cnesJson
+}
+
+export const mappingToJson = (text, cnesList, pickers) => {
+    let type  = pickers[0]
+    let state = pickers[1]
+    let time  = pickers[2]
+
+    console.log(pickers)
 
     centroparto.map(c => {
         if(c.NO_FANTASIA != null){
@@ -149,20 +161,5 @@ export const findByName = (text) => {
             }
         }
     })
-    var cnesJson = JSON.stringify(cnesList)
-    
-    {/*
-    const meuJson = [{
-        "nome": "Fulano da Silva",
-        "idade": 30,
-        "cidade": "Rio de Janeiro"
-    },{
-        "nome": "Beltrano de Souza",
-        "idade": 25,
-        "cidade": "São Paulo"
-    }]
-    const jsonStr = JSON.stringify(meuJson);
-    return jsonStr
-    */}
-    return cnesJson
+    return cnesList
 }
