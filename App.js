@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, Image, Fla
 import React, { useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import {Picker} from '@react-native-picker/picker';
+import MapView, { Marker } from 'react-native-maps';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -30,6 +31,8 @@ function MainScreen({ navigation }){
 
   const [modalVisible, setModalVisible] = useState(false);
 
+  const [errorModalVisible, setErrorModalVisible] = useState(false);
+
   const [selectedValue, setSelectedValue] = useState([]);
 
   const [pickerValues, setPickerValues] = useState(['', '', '']);
@@ -40,7 +43,12 @@ function MainScreen({ navigation }){
 
   const handleChangeText = (inputText) => {
     const result = findByName(value, pickers)
-    navigation.navigate('ListingScreen', {result})
+    const resultJson = JSON.parse(result)
+    if(resultJson != ''){
+      navigation.navigate('ListingScreen', {result})
+    }else{
+      setErrorModalVisible(true)
+    }
     pickers = ['', '', '']
   }
 
@@ -195,6 +203,31 @@ function MainScreen({ navigation }){
                     <Text style={stylesFilterScreen.textInternStyle}>Cancelar</Text>
                   </Pressable>
                 </View>
+              </View>
+            </View>
+          </Modal>
+
+          <Modal 
+            animationType="slide"
+            transparent={true}
+            visible={errorModalVisible}
+            onRequestClose={() => {
+              setErrorModalVisible(!errorModalVisible);
+            }}>
+            <View style={stylesFilterScreen.centeredView}>
+              <View style={stylesFilterScreen.modalView}>
+                <Text style={stylesFilterScreen.modalTextError}
+                >
+                  Estabelecimento não encontrado!
+                  <View style={{ flexDirection: 'column' }}>
+                    <Pressable
+                      style={[stylesFilterScreen.buttonError, stylesFilterScreen.buttonCloseError]}
+                      onPress={() => setErrorModalVisible(false)}
+                    >
+                      <Text style={stylesFilterScreen.textInternStyle}>Fechar</Text>
+                    </Pressable>
+                  </View>
+                </Text>
               </View>
             </View>
           </Modal>
@@ -389,7 +422,7 @@ const stylesFilterScreen = StyleSheet.create({
   },
   button: {
     borderRadius: 20,
-    padding: 10,
+    padding: 10
   },
   buttonOpen: {
     backgroundColor: "transparent",
@@ -404,7 +437,7 @@ const stylesFilterScreen = StyleSheet.create({
     color: "#000",
     fontWeight: "bold",
     textAlign: "center",
-    marginLeft: 5
+    marginLeft: 5,
   },
   textInternStyle: {
     color: "#000",
@@ -414,6 +447,21 @@ const stylesFilterScreen = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center"
+  },
+
+  buttonError: {
+    borderRadius: 20,
+    padding: 10,
+  },
+  buttonCloseError: {
+    backgroundColor: "#2196F3",
+    marginTop: 20
+  },
+  modalTextError: {
+    color: 'red',
+    textAlign: "center",
+    fontWeight: 'bold',
+    fontSize: 15
   }
 });
 

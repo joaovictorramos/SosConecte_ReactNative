@@ -13,7 +13,7 @@ const prontosocorro     = require('../resource/cnes_estabelecimentos_prontosocor
 
 export const findByName = (text, pickers) => {
     let cnesList = []
-    cnesList = mappingToJson(text, cnesList, pickers)
+    cnesList = mappingToJson(text.trim(), cnesList, pickers)
 
     var cnesJson = JSON.stringify(cnesList)
     return cnesJson
@@ -23,163 +23,202 @@ export const mappingToJson = (text, cnesList, pickers) => {
     //let type  = pickers[0]
     //let state = pickers[1]
     //let time  = pickers[2]
+    let counter = 1
 
-    console.log(pickers)
-    
-    if(pickers[0] == '' && pickers[1] == '' && pickers[2] == ''){
-        centroparto.map(c => {
-            if(c.NO_FANTASIA != null){
-                if(c.NO_FANTASIA.includes(text.toUpperCase())){
-                    cnesList.push({
-                        "name": c.NO_FANTASIA,
-                        "unity": 'CENTRO DE PARTO',
-                        "state": brazillianState(c.CO_UF),
-                        "neighborhood": c.NO_BAIRRO,
-                        "address": c.NO_LOGRADOURO,
-                        "phone": c.NU_TELEFONE,
-                        "time": shiftEntity(c.DS_TURNO_ATENDIMENTO),
-                        "listing": ''
-                    })
+    if(text != null && text != ''){
+        if(pickers[0] == '' && pickers[1] == '' && pickers[2] == ''){
+            centroparto.map(c => {
+                if(c.NO_FANTASIA != null){
+                    if(c.NO_FANTASIA.includes(text.toUpperCase())){
+                        if(counter <= 50){
+                            cnesList.push({
+                                "key": c.CO_CNES,
+                                "name": c.NO_FANTASIA,
+                                "unity": 'CENTRO DE PARTO',
+                                "state": brazillianState(c.CO_UF),
+                                "neighborhood": c.NO_BAIRRO,
+                                "address": c.NO_LOGRADOURO,
+                                "phone": c.NU_TELEFONE,
+                                "time": shiftEntity(c.DS_TURNO_ATENDIMENTO),
+                                "listing": ''
+                            })
+                        }
+                        counter+=1
+                    }
                 }
-            }
-        })
-        centrosaude.map(c => {
-            if(c.NO_FANTASIA != null){
-                if(c.NO_FANTASIA.includes(text.toUpperCase())){
-                    cnesList.push({
-                        "name": c.NO_FANTASIA,
-                        "unity": 'CENTRO DE SAÚDE',
-                        "state": brazillianState(c.CO_UF),
-                        "neighborhood": c.NO_BAIRRO,
-                        "address": c.NO_LOGRADOURO,
-                        "phone": c.NU_TELEFONE,
-                        "time": shiftEntity(c.DS_TURNO_ATENDIMENTO),
-                        "listing": ''
-                    })
+            })
+            centrosaude.map(c => {
+                if(c.NO_FANTASIA != null){
+                    if(c.NO_FANTASIA.includes(text.toUpperCase())){
+                        if(counter <= 50){
+                            cnesList.push({
+                                "key": c.CO_CNES,
+                                "name": c.NO_FANTASIA,
+                                "unity": 'CENTRO DE SAÚDE',
+                                "state": brazillianState(c.CO_UF),
+                                "neighborhood": c.NO_BAIRRO,
+                                "address": c.NO_LOGRADOURO,
+                                "phone": c.NU_TELEFONE,
+                                "time": shiftEntity(c.DS_TURNO_ATENDIMENTO),
+                                "listing": ''
+                            })
+                        }
+                        counter+=1
+                    }
                 }
-            }
-        })
-        farmacia.map(c => {
-            if(c.NO_FANTASIA != null){
-                if(c.NO_FANTASIA.includes(text.toUpperCase())){
-                    cnesList.push({
-                        "name": c.NO_FANTASIA,
-                        "unity": 'FARMÁCIA',
-                        "state": brazillianState(c.CO_UF),
-                        "neighborhood": c.NO_BAIRRO,
-                        "address": c.NO_LOGRADOURO,
-                        "phone": c.NU_TELEFONE,
-                        "time": shiftEntity(c.DS_TURNO_ATENDIMENTO),
-                        "listing": ''
-                    })
+            })
+            farmacia.map(c => {
+                if(c.NO_FANTASIA != null){
+                    if(c.NO_FANTASIA.includes(text.toUpperCase())){
+                        if(counter <= 50){
+                            cnesList.push({
+                                "key": c.CO_CNES,
+                                "name": c.NO_FANTASIA,
+                                "unity": 'FARMÁCIA',
+                                "state": brazillianState(c.CO_UF),
+                                "neighborhood": c.NO_BAIRRO,
+                                "address": c.NO_LOGRADOURO,
+                                "phone": c.NU_TELEFONE,
+                                "time": shiftEntity(c.DS_TURNO_ATENDIMENTO),
+                                "listing": ''
+                            })
+                        }
+                        counter+=1
+                    }
                 }
-            }
-        })
-        homecare.map(c => {
-            if(c.NO_FANTASIA != null){
-                if(c.NO_FANTASIA.includes(text.toUpperCase())){
-                    cnesList.push({
-                        "name": c.NO_FANTASIA,
-                        "unity": 'HOME CARE',
-                        "state": brazillianState(c.CO_UF),
-                        "neighborhood": c.NO_BAIRRO,
-                        "address": c.NO_LOGRADOURO,
-                        "phone": c.NU_TELEFONE,
-                        "time": shiftEntity(c.DS_TURNO_ATENDIMENTO),
-                        "listing": ''
-                    })
+            })
+            homecare.map(c => {
+                if(c.NO_FANTASIA != null){
+                    if(c.NO_FANTASIA.includes(text.toUpperCase())){
+                        if(counter <= 50){
+                            cnesList.push({
+                                "key": c.CO_CNES,
+                                "name": c.NO_FANTASIA,
+                                "unity": 'HOME CARE',
+                                "state": brazillianState(c.CO_UF),
+                                "neighborhood": c.NO_BAIRRO,
+                                "address": c.NO_LOGRADOURO,
+                                "phone": c.NU_TELEFONE,
+                                "time": shiftEntity(c.DS_TURNO_ATENDIMENTO),
+                                "listing": ''
+                            })
+                        }
+                        counter+=1
+                    }
                 }
-            }
-        })
-        hospitalgeral.map(c => {
-            if(c.NO_FANTASIA != null){
-                if(c.NO_FANTASIA.includes(text.toUpperCase())){
-                    cnesList.push({
-                        "name": c.NO_FANTASIA,
-                        "unity": 'HOSPITAL GERAL',
-                        "state": brazillianState(c.CO_UF),
-                        "neighborhood": c.NO_BAIRRO,
-                        "address": c.NO_LOGRADOURO,
-                        "phone": c.NU_TELEFONE,
-                        "time": shiftEntity(c.DS_TURNO_ATENDIMENTO),
-                        "listing": ''
-                    })
+            })
+            hospitalgeral.map(c => {
+                if(c.NO_FANTASIA != null){
+                    if(c.NO_FANTASIA.includes(text.toUpperCase())){
+                        if(counter <= 50){
+                            cnesList.push({
+                                "key": c.CO_CNES,
+                                "name": c.NO_FANTASIA,
+                                "unity": 'HOSPITAL GERAL',
+                                "state": brazillianState(c.CO_UF),
+                                "neighborhood": c.NO_BAIRRO,
+                                "address": c.NO_LOGRADOURO,
+                                "phone": c.NU_TELEFONE,
+                                "time": shiftEntity(c.DS_TURNO_ATENDIMENTO),
+                                "listing": ''
+                            })
+                        }
+                        counter+=1
+                    }
                 }
-            }
-        })
-        policlinica.map(c => {
-            if(c.NO_FANTASIA != null){
-                if(c.NO_FANTASIA.includes(text.toUpperCase())){
-                    cnesList.push({
-                        "name": c.NO_FANTASIA,
-                        "unity": 'POLICLÍNICA',
-                        "state": brazillianState(c.CO_UF),
-                        "neighborhood": c.NO_BAIRRO,
-                        "address": c.NO_LOGRADOURO,
-                        "phone": c.NU_TELEFONE,
-                        "time": shiftEntity(c.DS_TURNO_ATENDIMENTO),
-                        "listing": ''
-                    })
+            })
+            policlinica.map(c => {
+                if(c.NO_FANTASIA != null){
+                    if(c.NO_FANTASIA.includes(text.toUpperCase())){
+                        if(counter <= 50){
+                            cnesList.push({
+                                "key": c.CO_CNES,
+                                "name": c.NO_FANTASIA,
+                                "unity": 'POLICLÍNICA',
+                                "state": brazillianState(c.CO_UF),
+                                "neighborhood": c.NO_BAIRRO,
+                                "address": c.NO_LOGRADOURO,
+                                "phone": c.NU_TELEFONE,
+                                "time": shiftEntity(c.DS_TURNO_ATENDIMENTO),
+                                "listing": ''
+                            })
+                        }
+                        counter+=1
+                    }
                 }
-            }
-        })
-        postosaude.map(c => {
-            if(c.NO_FANTASIA != null){
-                if(c.NO_FANTASIA.includes(text.toUpperCase())){
-                    cnesList.push({
-                        "name": c.NO_FANTASIA,
-                        "unity": 'POSTO DE SAÚDE',
-                        "state": brazillianState(c.CO_UF),
-                        "neighborhood": c.NO_BAIRRO,
-                        "address": c.NO_LOGRADOURO,
-                        "phone": c.NU_TELEFONE,
-                        "time": shiftEntity(c.DS_TURNO_ATENDIMENTO),
-                        "listing": ''
-                    })
+            })
+            postosaude.map(c => {
+                if(c.NO_FANTASIA != null){
+                    if(c.NO_FANTASIA.includes(text.toUpperCase())){
+                        if(counter <= 50){
+                            cnesList.push({
+                                "key": c.CO_CNES,
+                                "name": c.NO_FANTASIA,
+                                "unity": 'POSTO DE SAÚDE',
+                                "state": brazillianState(c.CO_UF),
+                                "neighborhood": c.NO_BAIRRO,
+                                "address": c.NO_LOGRADOURO,
+                                "phone": c.NU_TELEFONE,
+                                "time": shiftEntity(c.DS_TURNO_ATENDIMENTO),
+                                "listing": ''
+                            })
+                        }
+                        counter+=1
+                    }
                 }
-            }
-        })
-        prontoatendimento.map(c => {
-            if(c.NO_FANTASIA != null){
-                if(c.NO_FANTASIA.includes(text.toUpperCase())){
-                    cnesList.push({
-                        "name": c.NO_FANTASIA,
-                        "unity": 'UPA',
-                        "state": brazillianState(c.CO_UF),
-                        "neighborhood": c.NO_BAIRRO,
-                        "address": c.NO_LOGRADOURO,
-                        "phone": c.NU_TELEFONE,
-                        "time": shiftEntity(c.DS_TURNO_ATENDIMENTO),
-                        "listing": ''
-                    })
+            })
+            prontoatendimento.map(c => {
+                if(c.NO_FANTASIA != null){
+                    if(c.NO_FANTASIA.includes(text.toUpperCase())){
+                        if(counter <= 50){
+                            cnesList.push({
+                                "key": c.CO_CNES,
+                                "name": c.NO_FANTASIA,
+                                "unity": 'UPA',
+                                "state": brazillianState(c.CO_UF),
+                                "neighborhood": c.NO_BAIRRO,
+                                "address": c.NO_LOGRADOURO,
+                                "phone": c.NU_TELEFONE,
+                                "time": shiftEntity(c.DS_TURNO_ATENDIMENTO),
+                                "listing": ''
+                            })
+                        }
+                        counter+=1
+                    }
                 }
-            }
-        })
-        prontosocorro.map(c => {
-            if(c.NO_FANTASIA != null){
-                if(c.NO_FANTASIA.includes(text.toUpperCase())){
-                    cnesList.push({
-                        "name": c.NO_FANTASIA,
-                        "unity": 'PRONTO SOCORRO',
-                        "state": brazillianState(c.CO_UF),
-                        "neighborhood": c.NO_BAIRRO,
-                        "address": c.NO_LOGRADOURO,
-                        "phone": c.NU_TELEFONE,
-                        "time": shiftEntity(c.DS_TURNO_ATENDIMENTO),
-                        "listing": ''
-                    })
+            })
+            prontosocorro.map(c => {
+                if(c.NO_FANTASIA != null){
+                    if(c.NO_FANTASIA.includes(text.toUpperCase())){
+                        if(counter <= 50){
+                            cnesList.push({
+                                "key": c.CO_CNES,
+                                "name": c.NO_FANTASIA,
+                                "unity": 'PRONTO SOCORRO',
+                                "state": brazillianState(c.CO_UF),
+                                "neighborhood": c.NO_BAIRRO,
+                                "address": c.NO_LOGRADOURO,
+                                "phone": c.NU_TELEFONE,
+                                "time": shiftEntity(c.DS_TURNO_ATENDIMENTO),
+                                "listing": ''
+                            })
+                        }
+                        counter+=1
+                    }
                 }
-            }
-        })
-        return cnesList
+            })
+            return cnesList
+        }
+        return filteringToJson(text, cnesList, pickers)
     }
-    return filteringToJson(text, cnesList, pickers)
+    return cnesList
 }
 
 export const filteringToJson = (text, cnesList, pickers) => {
     let type  = pickers[0]
     let state = pickers[1]
     let time  = pickers[2]
+    let counter = 1
 
     for(let c of centroparto){
         if(c.NO_FANTASIA != null){
@@ -189,19 +228,26 @@ export const filteringToJson = (text, cnesList, pickers) => {
                 let timeUpperCase  = shiftEntity(c.DS_TURNO_ATENDIMENTO)
 
                 if(type == typeUpperCase && state == stateUpperCase && time == timeUpperCase){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(type == typeUpperCase && state == stateUpperCase && time == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(type == typeUpperCase && time == timeUpperCase && state == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(state == stateUpperCase && time == timeUpperCase && type == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(type == typeUpperCase && state == "" && time == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(state == stateUpperCase && type == "" && time == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(time == timeUpperCase && type == "" && state == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }
             }
         }
@@ -215,19 +261,26 @@ export const filteringToJson = (text, cnesList, pickers) => {
                 let timeUpperCase  = shiftEntity(c.DS_TURNO_ATENDIMENTO)
 
                 if(type == typeUpperCase && state == stateUpperCase && time == timeUpperCase){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(type == typeUpperCase && state == stateUpperCase && time == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(type == typeUpperCase && time == timeUpperCase && state == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(state == stateUpperCase && time == timeUpperCase && type == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(type == typeUpperCase && state == "" && time == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(state == stateUpperCase && type == "" && time == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(time == timeUpperCase && type == "" && state == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }
             }
         }
@@ -241,19 +294,26 @@ export const filteringToJson = (text, cnesList, pickers) => {
                 let timeUpperCase  = shiftEntity(c.DS_TURNO_ATENDIMENTO)
 
                 if(type == typeUpperCase && state == stateUpperCase && time == timeUpperCase){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(type == typeUpperCase && state == stateUpperCase && time == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(type == typeUpperCase && time == timeUpperCase && state == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(state == stateUpperCase && time == timeUpperCase && type == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(type == typeUpperCase && state == "" && time == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(state == stateUpperCase && type == "" && time == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(time == timeUpperCase && type == "" && state == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }
             }
         }
@@ -267,19 +327,26 @@ export const filteringToJson = (text, cnesList, pickers) => {
                 let timeUpperCase  = shiftEntity(c.DS_TURNO_ATENDIMENTO)
 
                 if(type == typeUpperCase && state == stateUpperCase && time == timeUpperCase){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(type == typeUpperCase && state == stateUpperCase && time == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(type == typeUpperCase && time == timeUpperCase && state == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(state == stateUpperCase && time == timeUpperCase && type == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(type == typeUpperCase && state == "" && time == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(state == stateUpperCase && type == "" && time == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(time == timeUpperCase && type == "" && state == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }
             }
         }
@@ -293,19 +360,26 @@ export const filteringToJson = (text, cnesList, pickers) => {
                 let timeUpperCase  = shiftEntity(c.DS_TURNO_ATENDIMENTO)
 
                 if(type == typeUpperCase && state == stateUpperCase && time == timeUpperCase){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(type == typeUpperCase && state == stateUpperCase && time == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(type == typeUpperCase && time == timeUpperCase && state == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(state == stateUpperCase && time == timeUpperCase && type == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(type == typeUpperCase && state == "" && time == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(state == stateUpperCase && type == "" && time == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(time == timeUpperCase && type == "" && state == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }
             }
         }
@@ -319,19 +393,26 @@ export const filteringToJson = (text, cnesList, pickers) => {
                 let timeUpperCase  = shiftEntity(c.DS_TURNO_ATENDIMENTO)
 
                 if(type == typeUpperCase && state == stateUpperCase && time == timeUpperCase){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(type == typeUpperCase && state == stateUpperCase && time == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(type == typeUpperCase && time == timeUpperCase && state == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(state == stateUpperCase && time == timeUpperCase && type == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(type == typeUpperCase && state == "" && time == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(state == stateUpperCase && type == "" && time == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(time == timeUpperCase && type == "" && state == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }
             }
         }
@@ -345,19 +426,26 @@ export const filteringToJson = (text, cnesList, pickers) => {
                 let timeUpperCase  = shiftEntity(c.DS_TURNO_ATENDIMENTO)
 
                 if(type == typeUpperCase && state == stateUpperCase && time == timeUpperCase){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(type == typeUpperCase && state == stateUpperCase && time == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(type == typeUpperCase && time == timeUpperCase && state == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(state == stateUpperCase && time == timeUpperCase && type == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(type == typeUpperCase && state == "" && time == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(state == stateUpperCase && type == "" && time == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(time == timeUpperCase && type == "" && state == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }
             }
         }
@@ -371,19 +459,26 @@ export const filteringToJson = (text, cnesList, pickers) => {
                 let timeUpperCase  = shiftEntity(c.DS_TURNO_ATENDIMENTO)
 
                 if(type == typeUpperCase && state == stateUpperCase && time == timeUpperCase){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(type == typeUpperCase && state == stateUpperCase && time == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(type == typeUpperCase && time == timeUpperCase && state == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(state == stateUpperCase && time == timeUpperCase && type == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(type == typeUpperCase && state == "" && time == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(state == stateUpperCase && type == "" && time == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(time == timeUpperCase && type == "" && state == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }
             }
         }
@@ -397,19 +492,26 @@ export const filteringToJson = (text, cnesList, pickers) => {
                 let timeUpperCase  = shiftEntity(c.DS_TURNO_ATENDIMENTO)
 
                 if(type == typeUpperCase && state == stateUpperCase && time == timeUpperCase){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(type == typeUpperCase && state == stateUpperCase && time == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(type == typeUpperCase && time == timeUpperCase && state == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(state == stateUpperCase && time == timeUpperCase && type == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(type == typeUpperCase && state == "" && time == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(state == stateUpperCase && type == "" && time == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }else if(time == timeUpperCase && type == "" && state == ""){
-                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase)
+                    pushData(c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter)
+                    counter+=1
                 }
             }
         }
@@ -417,17 +519,20 @@ export const filteringToJson = (text, cnesList, pickers) => {
     return cnesList
 }
 
-export const pushData = (c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase) => {
-    cnesList.push({
-        "name": c.NO_FANTASIA,
-        "unity": typeUpperCase,
-        "state": stateUpperCase,
-        "neighborhood": c.NO_BAIRRO,
-        "address": c.NO_LOGRADOURO,
-        "phone": c.NU_TELEFONE,
-        "time": timeUpperCase,
-        "listing": ''
-    })
+export const pushData = (c, cnesList, typeUpperCase, stateUpperCase, timeUpperCase, counter) => {
+    if(counter <= 50){
+        cnesList.push({
+            "key": c.CO_CNES,
+            "name": c.NO_FANTASIA,
+            "unity": typeUpperCase,
+            "state": stateUpperCase,
+            "neighborhood": c.NO_BAIRRO,
+            "address": c.NO_LOGRADOURO,
+            "phone": c.NU_TELEFONE,
+            "time": timeUpperCase,
+            "listing": ''
+        })
+    }
 }
 
 export const findBySpecificType = (index) => {
@@ -440,6 +545,7 @@ export const findBySpecificType = (index) => {
                 if(c.NO_FANTASIA != null){
                     if(counter <= 50){
                         cnesList.push({
+                            "key": c.CO_CNES,
                             "name": c.NO_FANTASIA,
                             "unity": 'HOSPITAL GERAL',
                             "state": brazillianState(c.CO_UF),
@@ -458,6 +564,7 @@ export const findBySpecificType = (index) => {
                 if(c.NO_FANTASIA != null){
                     if(counter <= 50){
                         cnesList.push({
+                            "key": c.CO_CNES,
                             "name": c.NO_FANTASIA,
                             "unity": 'POSTO DE SAÚDE',
                             "state": brazillianState(c.CO_UF),
@@ -476,6 +583,7 @@ export const findBySpecificType = (index) => {
                 if(c.NO_FANTASIA != null){
                     if(counter <= 50){
                         cnesList.push({
+                            "key": c.CO_CNES,
                             "name": c.NO_FANTASIA,
                             "unity": 'HOME CARE',
                             "state": brazillianState(c.CO_UF),
@@ -494,6 +602,7 @@ export const findBySpecificType = (index) => {
                 if(c.NO_FANTASIA != null){
                     if(counter <= 50){
                         cnesList.push({
+                            "key": c.CO_CNES,
                             "name": c.NO_FANTASIA,
                             "unity": 'FARMÁCIA',
                             "state": brazillianState(c.CO_UF),
@@ -512,6 +621,7 @@ export const findBySpecificType = (index) => {
                 if(c.NO_FANTASIA != null){
                     if(counter <= 50){
                         cnesList.push({
+                            "key": c.CO_CNES,
                             "name": c.NO_FANTASIA,
                             "unity": 'POLICLÍNICA',
                             "state": brazillianState(c.CO_UF),
@@ -530,6 +640,7 @@ export const findBySpecificType = (index) => {
                 if(c.NO_FANTASIA != null){
                     if(counter <= 50){
                         cnesList.push({
+                            "key": c.CO_CNES,
                             "name": c.NO_FANTASIA,
                             "unity": 'CENTRO DE SAÚDE',
                             "state": brazillianState(c.CO_UF),
@@ -548,6 +659,7 @@ export const findBySpecificType = (index) => {
                 if(c.NO_FANTASIA != null){
                     if(counter <= 50){
                         cnesList.push({
+                            "key": c.CO_CNES,
                             "name": c.NO_FANTASIA,
                             "unity": 'UPA',
                             "state": brazillianState(c.CO_UF),
@@ -566,6 +678,7 @@ export const findBySpecificType = (index) => {
                 if(c.NO_FANTASIA != null){
                     if(counter <= 50){
                         cnesList.push({
+                            "key": c.CO_CNES,
                             "name": c.NO_FANTASIA,
                             "unity": 'PRONTO SOCORRO GERAL',
                             "state": brazillianState(c.CO_UF),
@@ -584,6 +697,7 @@ export const findBySpecificType = (index) => {
                 if(c.NO_FANTASIA != null){
                     if(counter <= 50){
                         cnesList.push({
+                            "key": c.CO_CNES,
                             "name": c.NO_FANTASIA,
                             "unity": 'CENTRO DE PARTO',
                             "state": brazillianState(c.CO_UF),
