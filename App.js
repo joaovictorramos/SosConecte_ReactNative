@@ -29,6 +29,7 @@ const cardsEX = [
   { name: 'CLINICA ODONTOLOGICA UNIAO TIJUCAS LTDA', address: 'BAYER FILHO, 1400, CENTRO, Santa Catarina - SC', shift: 'MANHÃ E TARDE' },
   { name: 'CLINICA ODONTOLOGICA UNIAO TIJUCAS LTDA', address: 'BAYER FILHO, 1400, CENTRO, Santa Catarina - SC', shift: 'MANHÃ E TARDE' },
 ]
+let pickers = ['', '', '']
 
 
 function MainScreen({ navigation }){
@@ -44,12 +45,10 @@ function MainScreen({ navigation }){
 
   const imageCards = [card1, card2, card3, card4, card5, card6, card7, card8, card9]  
 
-  let pickers = ['', '', '']
-
   const handleChangeText = (inputText) => {
-    console.log(pickers)
     const result = findByName(value, pickers)
     navigation.navigate('ListingScreen', {result});
+    pickers = ['', '', '']
   }
 
   const resetPickerValues = () => {

@@ -61,7 +61,7 @@ export const brazillianState = (uf) => {
 
 export const shiftEntity = (shift) => {
     switch(shift){
-        case "ATENDIMENTO SOMENTE PELA MANHÃ":
+        case "ATENDIMENTO SOMENTE PELA MANHA":
             return "SOMENTE MANHÃ"
         case "ATENDIMENTO SOMENTE A TARDE":
             return "SOMENTE TARDE"
@@ -77,5 +77,30 @@ export const shiftEntity = (shift) => {
             return "TURNOS INTERMITENTES"
         default:
             return ""
+    }
+}
+
+export const unityType = (type) => {
+    switch(type.toString()){
+        case '1':
+            return 'POSTO DE SAÚDE'
+        case '2':
+            return 'CENTRO DE SAÚDE'
+        case '4':
+            return "POLICLÍNICA"
+        case '5':
+            return "HOSPITAL"
+        case '20':
+            return "PRONTO SOCORRO"
+        case '36':
+            return "CLÍNICA"
+        case '43':
+            return "FARMÁCIA"
+        case '61':
+            return "CENTRO DE PARTO"
+        case '73':
+            return "UPA"
+        case '77':
+            return "HOME CARE"
     }
 }
