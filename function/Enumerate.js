@@ -89,7 +89,7 @@ export const unityType = (type) => {
         case '4':
             return "POLICLÍNICA"
         case '5':
-            return "HOSPITAL"
+            return "HOSPITAL GERAL"
         case '20':
             return "PRONTO SOCORRO"
         case '36':

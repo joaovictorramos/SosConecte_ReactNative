@@ -4,7 +4,7 @@ const centroparto       = require('../resource/cnes_estabelecimentos_centrodepar
 const centrosaude       = require('../resource/cnes_estabelecimentos_centrodesaude.json')
 const farmacia          = require('../resource/cnes_estabelecimentos_farmacia.json')
 const homecare          = require('../resource/cnes_estabelecimentos_homecare.json')
-const hospital          = require('../resource/cnes_estabelecimentos_hospitalgeral.json')
+const hospitalgeral     = require('../resource/cnes_estabelecimentos_hospitalgeral.json')
 const policlinica       = require('../resource/cnes_estabelecimentos_policlinica.json')
 const postosaude        = require('../resource/cnes_estabelecimentos_postodesaude.json')
 const prontoatendimento = require('../resource/cnes_estabelecimentos_prontoatendimento.json')
@@ -37,7 +37,8 @@ export const mappingToJson = (text, cnesList, pickers) => {
                         "neighborhood": c.NO_BAIRRO,
                         "address": c.NO_LOGRADOURO,
                         "phone": c.NU_TELEFONE,
-                        "time": shiftEntity(c.DS_TURNO_ATENDIMENTO)
+                        "time": shiftEntity(c.DS_TURNO_ATENDIMENTO),
+                        "listing": ''
                     })
                 }
             }
@@ -52,7 +53,8 @@ export const mappingToJson = (text, cnesList, pickers) => {
                         "neighborhood": c.NO_BAIRRO,
                         "address": c.NO_LOGRADOURO,
                         "phone": c.NU_TELEFONE,
-                        "time": shiftEntity(c.DS_TURNO_ATENDIMENTO)
+                        "time": shiftEntity(c.DS_TURNO_ATENDIMENTO),
+                        "listing": ''
                     })
                 }
             }
@@ -67,7 +69,8 @@ export const mappingToJson = (text, cnesList, pickers) => {
                         "neighborhood": c.NO_BAIRRO,
                         "address": c.NO_LOGRADOURO,
                         "phone": c.NU_TELEFONE,
-                        "time": shiftEntity(c.DS_TURNO_ATENDIMENTO)
+                        "time": shiftEntity(c.DS_TURNO_ATENDIMENTO),
+                        "listing": ''
                     })
                 }
             }
@@ -82,22 +85,24 @@ export const mappingToJson = (text, cnesList, pickers) => {
                         "neighborhood": c.NO_BAIRRO,
                         "address": c.NO_LOGRADOURO,
                         "phone": c.NU_TELEFONE,
-                        "time": shiftEntity(c.DS_TURNO_ATENDIMENTO)
+                        "time": shiftEntity(c.DS_TURNO_ATENDIMENTO),
+                        "listing": ''
                     })
                 }
             }
         })
-        hospital.map(c => {
+        hospitalgeral.map(c => {
             if(c.NO_FANTASIA != null){
                 if(c.NO_FANTASIA.includes(text.toUpperCase())){
                     cnesList.push({
                         "name": c.NO_FANTASIA,
-                        "unity": 'HOSPITAL',
+                        "unity": 'HOSPITAL GERAL',
                         "state": brazillianState(c.CO_UF),
                         "neighborhood": c.NO_BAIRRO,
                         "address": c.NO_LOGRADOURO,
                         "phone": c.NU_TELEFONE,
-                        "time": shiftEntity(c.DS_TURNO_ATENDIMENTO)
+                        "time": shiftEntity(c.DS_TURNO_ATENDIMENTO),
+                        "listing": ''
                     })
                 }
             }
@@ -112,7 +117,8 @@ export const mappingToJson = (text, cnesList, pickers) => {
                         "neighborhood": c.NO_BAIRRO,
                         "address": c.NO_LOGRADOURO,
                         "phone": c.NU_TELEFONE,
-                        "time": shiftEntity(c.DS_TURNO_ATENDIMENTO)
+                        "time": shiftEntity(c.DS_TURNO_ATENDIMENTO),
+                        "listing": ''
                     })
                 }
             }
@@ -127,7 +133,8 @@ export const mappingToJson = (text, cnesList, pickers) => {
                         "neighborhood": c.NO_BAIRRO,
                         "address": c.NO_LOGRADOURO,
                         "phone": c.NU_TELEFONE,
-                        "time": shiftEntity(c.DS_TURNO_ATENDIMENTO)
+                        "time": shiftEntity(c.DS_TURNO_ATENDIMENTO),
+                        "listing": ''
                     })
                 }
             }
@@ -142,7 +149,8 @@ export const mappingToJson = (text, cnesList, pickers) => {
                         "neighborhood": c.NO_BAIRRO,
                         "address": c.NO_LOGRADOURO,
                         "phone": c.NU_TELEFONE,
-                        "time": shiftEntity(c.DS_TURNO_ATENDIMENTO)
+                        "time": shiftEntity(c.DS_TURNO_ATENDIMENTO),
+                        "listing": ''
                     })
                 }
             }
@@ -157,7 +165,8 @@ export const mappingToJson = (text, cnesList, pickers) => {
                         "neighborhood": c.NO_BAIRRO,
                         "address": c.NO_LOGRADOURO,
                         "phone": c.NU_TELEFONE,
-                        "time": shiftEntity(c.DS_TURNO_ATENDIMENTO)
+                        "time": shiftEntity(c.DS_TURNO_ATENDIMENTO),
+                        "listing": ''
                     })
                 }
             }
@@ -276,7 +285,7 @@ export const filteringToJson = (text, cnesList, pickers) => {
         }
     }
 
-    for(let c of hospital){
+    for(let c of hospitalgeral){
         if(c.NO_FANTASIA != null){
             if(c.NO_FANTASIA.includes(text.toUpperCase())){
                 let typeUpperCase  = unityType(c.TP_UNIDADE) 
@@ -416,6 +425,179 @@ export const pushData = (c, cnesList, typeUpperCase, stateUpperCase, timeUpperCa
         "neighborhood": c.NO_BAIRRO,
         "address": c.NO_LOGRADOURO,
         "phone": c.NU_TELEFONE,
-        "time": timeUpperCase
+        "time": timeUpperCase,
+        "listing": ''
     })
+}
+
+export const findBySpecificType = (index) => {
+    let cnesList = []
+    let counter = 1
+    
+    switch(index.toString()){
+        case '0':
+            hospitalgeral.map(c => {
+                if(c.NO_FANTASIA != null){
+                    if(counter <= 50){
+                        cnesList.push({
+                            "name": c.NO_FANTASIA,
+                            "unity": 'HOSPITAL GERAL',
+                            "state": brazillianState(c.CO_UF),
+                            "neighborhood": c.NO_BAIRRO,
+                            "address": c.NO_LOGRADOURO,
+                            "phone": c.NU_TELEFONE,
+                            "time": shiftEntity(c.DS_TURNO_ATENDIMENTO),
+                            "listing": 'Hospital Geral'
+                        })
+                    }
+                    counter+=1
+                }
+            })
+        case '1':
+            postosaude.map(c => {
+                if(c.NO_FANTASIA != null){
+                    if(counter <= 50){
+                        cnesList.push({
+                            "name": c.NO_FANTASIA,
+                            "unity": 'POSTO DE SAÚDE',
+                            "state": brazillianState(c.CO_UF),
+                            "neighborhood": c.NO_BAIRRO,
+                            "address": c.NO_LOGRADOURO,
+                            "phone": c.NU_TELEFONE,
+                            "time": shiftEntity(c.DS_TURNO_ATENDIMENTO),
+                            "listing": 'Posto de Saúde'
+                        })
+                    }
+                    counter+=1
+                }
+            })
+        case '2':
+            homecare.map(c => {
+                if(c.NO_FANTASIA != null){
+                    if(counter <= 50){
+                        cnesList.push({
+                            "name": c.NO_FANTASIA,
+                            "unity": 'HOME CARE',
+                            "state": brazillianState(c.CO_UF),
+                            "neighborhood": c.NO_BAIRRO,
+                            "address": c.NO_LOGRADOURO,
+                            "phone": c.NU_TELEFONE,
+                            "time": shiftEntity(c.DS_TURNO_ATENDIMENTO),
+                            "listing": 'Home Care'
+                        })
+                    }
+                    counter+=1
+                }
+            })
+        case '3':
+            farmacia.map(c => {
+                if(c.NO_FANTASIA != null){
+                    if(counter <= 50){
+                        cnesList.push({
+                            "name": c.NO_FANTASIA,
+                            "unity": 'FARMÁCIA',
+                            "state": brazillianState(c.CO_UF),
+                            "neighborhood": c.NO_BAIRRO,
+                            "address": c.NO_LOGRADOURO,
+                            "phone": c.NU_TELEFONE,
+                            "time": shiftEntity(c.DS_TURNO_ATENDIMENTO),
+                            "listing": 'Farmácia'
+                        })
+                    }
+                    counter+=1
+                }
+            })
+        case '4':
+            policlinica.map(c => {
+                if(c.NO_FANTASIA != null){
+                    if(counter <= 50){
+                        cnesList.push({
+                            "name": c.NO_FANTASIA,
+                            "unity": 'POLICLÍNICA',
+                            "state": brazillianState(c.CO_UF),
+                            "neighborhood": c.NO_BAIRRO,
+                            "address": c.NO_LOGRADOURO,
+                            "phone": c.NU_TELEFONE,
+                            "time": shiftEntity(c.DS_TURNO_ATENDIMENTO),
+                            "listing": 'Policlínica'
+                        })
+                    }
+                    counter+=1
+                }
+            })
+        case '5':
+            centrosaude.map(c => {
+                if(c.NO_FANTASIA != null){
+                    if(counter <= 50){
+                        cnesList.push({
+                            "name": c.NO_FANTASIA,
+                            "unity": 'CENTRO DE SAÚDE',
+                            "state": brazillianState(c.CO_UF),
+                            "neighborhood": c.NO_BAIRRO,
+                            "address": c.NO_LOGRADOURO,
+                            "phone": c.NU_TELEFONE,
+                            "time": shiftEntity(c.DS_TURNO_ATENDIMENTO),
+                            "listing": 'Centro de Saúde'
+                        })
+                    }
+                    counter+=1
+                }
+            })
+        case '6':
+            prontoatendimento.map(c => {
+                if(c.NO_FANTASIA != null){
+                    if(counter <= 50){
+                        cnesList.push({
+                            "name": c.NO_FANTASIA,
+                            "unity": 'UPA',
+                            "state": brazillianState(c.CO_UF),
+                            "neighborhood": c.NO_BAIRRO,
+                            "address": c.NO_LOGRADOURO,
+                            "phone": c.NU_TELEFONE,
+                            "time": shiftEntity(c.DS_TURNO_ATENDIMENTO),
+                            "listing": 'UPA'
+                        })
+                    }
+                    counter+=1
+                }
+            })
+        case '7':
+            prontosocorro.map(c => {
+                if(c.NO_FANTASIA != null){
+                    if(counter <= 50){
+                        cnesList.push({
+                            "name": c.NO_FANTASIA,
+                            "unity": 'PRONTO SOCORRO GERAL',
+                            "state": brazillianState(c.CO_UF),
+                            "neighborhood": c.NO_BAIRRO,
+                            "address": c.NO_LOGRADOURO,
+                            "phone": c.NU_TELEFONE,
+                            "time": shiftEntity(c.DS_TURNO_ATENDIMENTO),
+                            "listing": 'Pronto Socorro'
+                        })
+                    }
+                    counter+=1
+                }
+            })
+        case '8':
+            centroparto.map(c => {
+                if(c.NO_FANTASIA != null){
+                    if(counter <= 50){
+                        cnesList.push({
+                            "name": c.NO_FANTASIA,
+                            "unity": 'CENTRO DE PARTO',
+                            "state": brazillianState(c.CO_UF),
+                            "neighborhood": c.NO_BAIRRO,
+                            "address": c.NO_LOGRADOURO,
+                            "phone": c.NU_TELEFONE,
+                            "time": shiftEntity(c.DS_TURNO_ATENDIMENTO),
+                            "listing": 'Centro de Parto'
+                        })
+                    }
+                    counter+=1 
+                }
+            })
+    }
+    var cnesJson = JSON.stringify(cnesList)
+    return cnesJson
 }

@@ -12,23 +12,16 @@ import { DataTable, HelperText, List } from 'react-native-paper';
 
 import card1 from './assets/images/icons/hospital-geral.png'
 import card2 from './assets/images/icons/poste-de-sinalizacao.png'
-import card3 from './assets/images/icons/familia.png'
+import card3 from './assets/images/icons/homecare.png'
 import card4 from './assets/images/icons/remedio.png'
-import card5 from './assets/images/icons/hospital-particular.png'
-import card6 from './assets/images/icons/clinica.png'
+import card5 from './assets/images/icons/policlinica.png'
+import card6 from './assets/images/icons/centro-de-saude.png'
 import card7 from './assets/images/icons/unidade-pronto-atendimento.png'
 import card8 from './assets/images/icons/caixa-de-primeiros-socorros.png'
 import card9 from './assets/images/icons/recem-nascido.png'
-import { findByName } from './function/Service'; 
+import { findByName, findBySpecificType } from './function/Service'; 
 
 const Stack = createStackNavigator();
-const cardsEX = [
-  { name: 'CLINICA TRAUMA ORTOPEDICA TIJUCA LTDA ME', address: 'RUA CONDE DE BONFIM, 344, TIJUCA - RIO DE JANEIRO - RJ', shift: 'MANHÃ E TARDE'},
-  { name: '021 DENTAL BARRA DA TIJUCA ODONTOLOGIA LTDA', address: 'AVENIDA DAS AMERICAS, 3665, BARRA DA TIJUCA, RIO DE JANEIRO - RJ', shift: 'MANHÃ E TARDE' },
-  { name: 'CLINICA ODONTOLOGICA UNIAO TIJUCAS LTDA', address: 'BAYER FILHO, 1400, CENTRO, Santa Catarina - SC', shift: 'MANHÃ E TARDE' },
-  { name: 'CLINICA ODONTOLOGICA UNIAO TIJUCAS LTDA', address: 'BAYER FILHO, 1400, CENTRO, Santa Catarina - SC', shift: 'MANHÃ E TARDE' },
-  { name: 'CLINICA ODONTOLOGICA UNIAO TIJUCAS LTDA', address: 'BAYER FILHO, 1400, CENTRO, Santa Catarina - SC', shift: 'MANHÃ E TARDE' },
-]
 let pickers = ['', '', '']
 
 
@@ -41,13 +34,13 @@ function MainScreen({ navigation }){
 
   const [pickerValues, setPickerValues] = useState(['', '', '']);
 
-  const nameCards = ['Hospital Geral', 'Posto de Saúde', 'Clínica da Família', 'Farmácia', 'Hospital Particular', 'Clínica', 'UPA', 'Pronto Socorro Geral', 'Centro de Parto']
+  const nameCards = ['Hospital Geral', 'Posto de Saúde', 'Home Care', 'Farmácia', 'Policlínica', 'Centro de Saúde', 'UPA', 'Pronto Socorro Geral', 'Centro de Parto']
 
   const imageCards = [card1, card2, card3, card4, card5, card6, card7, card8, card9]  
 
   const handleChangeText = (inputText) => {
     const result = findByName(value, pickers)
-    navigation.navigate('ListingScreen', {result});
+    navigation.navigate('ListingScreen', {result})
     pickers = ['', '', '']
   }
 
@@ -72,30 +65,11 @@ function MainScreen({ navigation }){
     console.log(pickers)
   }
 
-  {/*
-  const filterPopup = () => 
-    Alert.alert(
-      "Filtros",
-      <View>
-        <Text>Selecione uma opção:</Text>
-        <Picker
-          selectedValue={selectedValue}
-          onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
-        >
-          <Picker.Item label="Java" value="java" />
-          <Picker.Item label="JavaScript" value="js" />
-        </Picker>
-      </View>,
-      [
-        {
-          text: "Cancelar",
-          onPress: () => console.log("Botão Cancelar pressionado"),
-          style: "cancel"
-        },
-        { text: "OK", onPress: () => console.log("Botão OK pressionado") }
-      ]
-    )
-  */}
+  const handleGridItems = (index) => {
+    const result = findBySpecificType(index)
+    navigation.navigate('ListingScreen', {result})
+    pickers = ['', '', '']
+  }
 
   return (
     <ImageBackground source={require('./assets/images/fundo.jpg')} resizeMode='cover' style={{flex: 1}}>      
@@ -118,13 +92,6 @@ function MainScreen({ navigation }){
           >
             <Text style={styles.buttonText}>Procurar</Text>
           </TouchableOpacity>
-
-          {/*
-          <TouchableOpacity style={styles.filterContainer} onPress={filterPopup}>
-            <Ionicons name="filter" size={24} color="black" />
-            <Text style={styles.filterText}>Filtrar</Text>
-          </TouchableOpacity>
-          */}
 
           <Pressable
             style={[stylesFilterScreen.button, stylesFilterScreen.buttonOpen]}
@@ -150,13 +117,12 @@ function MainScreen({ navigation }){
                   style={{ height: 50, width: 250 }} 
                   mode={"dialog"} 
                   onValueChange={handlePickerValues}
-                  /*onValueChange={(itemValue) => setSelectedValue(itemValue)} */
                 > 
                   <Picker.Item label="Tipo" value="" />
                   <Picker.Item label="Centro de Parto" value="1_CENTRO DE PARTO" /> 
                   <Picker.Item label="Centro de Saúde" value="1_CENTRO DE SAÚDE" /> 
                   <Picker.Item label="Farmácia" value="1_FARMÁCIA" />
-                  <Picker.Item label="Hospital" value="1_HOSPITAL" /> 
+                  <Picker.Item label="Hospital Geral" value="1_HOSPITAL GERAL" /> 
                   <Picker.Item label="Policlínica" value="1_POLICLÍNICA" />
                   <Picker.Item label="Posto de Saúde" value="1_POSTO DE SAÚDE" />
                   <Picker.Item label="Pronto Atendimento" value="1_PRONTO ATENDIMENTO" />
@@ -235,10 +201,10 @@ function MainScreen({ navigation }){
 
           <View style={styles.grid}>
             {nameCards.map((nameCard,index) => (
-              <View key={`${nameCard}-${index}`} style={styles.gridItem}>
-                <Image source={imageCards[index]} style={styles.gridItemImage} />
-                <Text style={styles.gridItemText}>{nameCard}</Text>
-              </View>
+              <TouchableOpacity style={styles.gridItem} key={`${nameCard}-${index}`} onPress={() => handleGridItems(index)}>
+                  <Image source={imageCards[index]} style={styles.gridItemImage} />
+                  <Text style={styles.gridItemText}>{nameCard}</Text>
+              </TouchableOpacity>
             ))}
           </View>
         </View>
@@ -249,6 +215,7 @@ function MainScreen({ navigation }){
 
 function ListingScreen({ route, navigation }){
   let responseJson = JSON.parse(route.params.result)
+  let listingValue = responseJson[0]['listing']
   return (
     <View style={stylesListingScreen.listingContainer}>
       <View style={stylesListingScreen.logoContainer}>
@@ -259,7 +226,7 @@ function ListingScreen({ route, navigation }){
       </View>
       <View style={stylesListingScreen.textContainer}>
         <Text style={{ fontSize: 18, fontWeight: 'bold' }}>
-          Listagem:
+          Listagem: {listingValue}
         </Text>
       </View>
       <View style={{marginTop: 215, paddingLeft: 20, paddingRight: 20}} >
