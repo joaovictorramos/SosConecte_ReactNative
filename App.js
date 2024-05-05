@@ -80,7 +80,7 @@ function MainScreen({ navigation }){
   }
 
   return (
-    <ImageBackground source={require('./assets/images/fundo.jpg')} resizeMode='cover' style={{flex: 1}}>      
+    <ImageBackground source={require('./assets/images/fundo.jpg')} resizeMode='cover' style={{flex: 1}}>
       <View style={styles.container}>
         <View style={styles.top}>
           <Image
@@ -218,8 +218,8 @@ function MainScreen({ navigation }){
               <View style={stylesFilterScreen.modalView}>
                 <Text style={stylesFilterScreen.modalTextError}
                 >
-                  Estabelecimento não encontrado!
-                  <View style={{ flexDirection: 'column' }}>
+                  Estabelecimento não encontrado! Utilize caracteres SEM acentuação
+                  <View style={{ flexDirection: 'row' }}>
                     <Pressable
                       style={[stylesFilterScreen.buttonError, stylesFilterScreen.buttonCloseError]}
                       onPress={() => setErrorModalVisible(false)}
@@ -388,12 +388,12 @@ function DisplayScreen({ route }){
 export default function App() {
   return (
     <NavigationContainer>
-      <StatusBar backgroundColor='#c4ffff' barStyle='light-content' />
-      <Stack.Navigator screenOptions={ headerShown=false } initialRouteName="MainScreen">
-        <Stack.Screen name="MainScreen" component={MainScreen} options={{ title: 'SOS Conecte', headerStyle: { backgroundColor: '#c4ffff' } }} />
-        <Stack.Screen name="ListingScreen" component={ListingScreen} options={{ title: '', headerStyle: { backgroundColor: '#c4ffff' } }} />
-        <Stack.Screen name="DisplayScreen" component={DisplayScreen} options={{ title: '', headerStyle: { backgroundColor: '#c4ffff' } }} />
-      </Stack.Navigator>
+        <StatusBar backgroundColor='#c4ffff' barStyle='light-content' />
+        <Stack.Navigator screenOptions={ headerShown=false } initialRouteName="MainScreen">
+          <Stack.Screen name="MainScreen" component={MainScreen} options={{ title: 'SOS Conecte', headerStyle: { backgroundColor: '#c4ffff' } }} />
+          <Stack.Screen name="ListingScreen" component={ListingScreen} options={{ title: '', headerStyle: { backgroundColor: '#c4ffff' } }} />
+          <Stack.Screen name="DisplayScreen" component={DisplayScreen} options={{ title: '', headerStyle: { backgroundColor: '#c4ffff' } }} />
+        </Stack.Navigator>      
     </NavigationContainer>
   );
 };
@@ -451,7 +451,7 @@ const stylesFilterScreen = StyleSheet.create({
 
   buttonError: {
     borderRadius: 20,
-    padding: 10,
+    padding: 10
   },
   buttonCloseError: {
     backgroundColor: "#2196F3",
