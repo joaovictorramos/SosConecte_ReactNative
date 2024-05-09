@@ -3,7 +3,6 @@ import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, Image, Fla
 import React, { useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import {Picker} from '@react-native-picker/picker';
-import MapView, { Marker } from 'react-native-maps';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
