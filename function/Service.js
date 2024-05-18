@@ -715,3 +715,189 @@ export const findBySpecificType = (index) => {
     var cnesJson = JSON.stringify(cnesList)
     return cnesJson
 }
+
+export const findByLatitudeAndLongitude = (minLatitude, minLongitude, maxLatitude, maxLongitude, radius) =>{
+    let cnesList = []
+
+    centroparto.map(c =>{
+        if(c.NO_FANTASIA != null){
+            latitude = c.NU_LATITUDE / Math.pow(10, 10)
+            longitude = c.NU_LONGITUDE / Math.pow(10, 10)
+            
+            if(((minLatitude <= latitude) && (latitude <= maxLatitude)) && ((minLongitude <= longitude) && (longitude <= maxLongitude))){
+                cnesList.push({
+                    "key": c.CO_CNES,
+                    "name": c.NO_FANTASIA,
+                    "unity": "CENTRO DE PARTO",
+                    "state": brazillianState(c.CO_UF),
+                    "neighborhood": c.NO_BAIRRO,
+                    "address": c.NO_LOGRADOURO,
+                    "phone": c.NU_TELEFONE,
+                    "time": shiftEntity(c.DS_TURNO_ATENDIMENTO),
+                    "listing": radius
+                })
+            }
+        }
+    })
+    centrosaude.map(c =>{
+        if(c.NO_FANTASIA != null){
+            latitude = c.NU_LATITUDE / Math.pow(10, 10)
+            longitude = c.NU_LONGITUDE / Math.pow(10, 10)
+            
+            if(((minLatitude <= latitude) && (latitude <= maxLatitude)) && ((minLongitude <= longitude) && (longitude <= maxLongitude))){
+                cnesList.push({
+                    "key": c.CO_CNES,
+                    "name": c.NO_FANTASIA,
+                    "unity": "CENTRO DE SAÚDE",
+                    "state": brazillianState(c.CO_UF),
+                    "neighborhood": c.NO_BAIRRO,
+                    "address": c.NO_LOGRADOURO,
+                    "phone": c.NU_TELEFONE,
+                    "time": shiftEntity(c.DS_TURNO_ATENDIMENTO),
+                    "listing": radius
+                })
+            }
+        }
+    })
+    farmacia.map(c =>{
+        if(c.NO_FANTASIA != null){
+            latitude = c.NU_LATITUDE / Math.pow(10, 10)
+            longitude = c.NU_LONGITUDE / Math.pow(10, 10)
+            
+            if(((minLatitude <= latitude) && (latitude <= maxLatitude)) && ((minLongitude <= longitude) && (longitude <= maxLongitude))){
+                cnesList.push({
+                    "key": c.CO_CNES,
+                    "name": c.NO_FANTASIA,
+                    "unity": "FARMÁCIA",
+                    "state": brazillianState(c.CO_UF),
+                    "neighborhood": c.NO_BAIRRO,
+                    "address": c.NO_LOGRADOURO,
+                    "phone": c.NU_TELEFONE,
+                    "time": shiftEntity(c.DS_TURNO_ATENDIMENTO),
+                    "listing": radius
+                })
+            }
+        }
+    })
+    homecare.map(c =>{
+        if(c.NO_FANTASIA != null){
+            latitude = c.NU_LATITUDE / Math.pow(10, 10)
+            longitude = c.NU_LONGITUDE / Math.pow(10, 10)
+            
+            if(((minLatitude <= latitude) && (latitude <= maxLatitude)) && ((minLongitude <= longitude) && (longitude <= maxLongitude))){
+                cnesList.push({
+                    "key": c.CO_CNES,
+                    "name": c.NO_FANTASIA,
+                    "unity": "HOME CARE",
+                    "state": brazillianState(c.CO_UF),
+                    "neighborhood": c.NO_BAIRRO,
+                    "address": c.NO_LOGRADOURO,
+                    "phone": c.NU_TELEFONE,
+                    "time": shiftEntity(c.DS_TURNO_ATENDIMENTO),
+                    "listing": radius
+                })
+            }
+        }
+    })
+    hospitalgeral.map(c =>{
+        if(c.NO_FANTASIA != null){
+            latitude = c.NU_LATITUDE / Math.pow(10, 10)
+            longitude = c.NU_LONGITUDE / Math.pow(10, 10)
+            
+            if(((minLatitude <= latitude) && (latitude <= maxLatitude)) && ((minLongitude <= longitude) && (longitude <= maxLongitude))){
+                cnesList.push({
+                    "key": c.CO_CNES,
+                    "name": c.NO_FANTASIA,
+                    "unity": "HOSPITAL GERAL",
+                    "state": brazillianState(c.CO_UF),
+                    "neighborhood": c.NO_BAIRRO,
+                    "address": c.NO_LOGRADOURO,
+                    "phone": c.NU_TELEFONE,
+                    "time": shiftEntity(c.DS_TURNO_ATENDIMENTO),
+                    "listing": radius
+                })
+            }
+        }
+    })
+    policlinica.map(c =>{
+        if(c.NO_FANTASIA != null){
+            latitude = c.NU_LATITUDE / Math.pow(10, 10)
+            longitude = c.NU_LONGITUDE / Math.pow(10, 10)
+            
+            if(((minLatitude <= latitude) && (latitude <= maxLatitude)) && ((minLongitude <= longitude) && (longitude <= maxLongitude))){
+                cnesList.push({
+                    "key": c.CO_CNES,
+                    "name": c.NO_FANTASIA,
+                    "unity": "POLICLÍNICA",
+                    "state": brazillianState(c.CO_UF),
+                    "neighborhood": c.NO_BAIRRO,
+                    "address": c.NO_LOGRADOURO,
+                    "phone": c.NU_TELEFONE,
+                    "time": shiftEntity(c.DS_TURNO_ATENDIMENTO),
+                    "listing": radius
+                })
+            }
+        }
+    })
+    postosaude.map(c =>{
+        if(c.NO_FANTASIA != null){
+            latitude = c.NU_LATITUDE / Math.pow(10, 10)
+            longitude = c.NU_LONGITUDE / Math.pow(10, 10)
+            
+            if(((minLatitude <= latitude) && (latitude <= maxLatitude)) && ((minLongitude <= longitude) && (longitude <= maxLongitude))){
+                cnesList.push({
+                    "key": c.CO_CNES,
+                    "name": c.NO_FANTASIA,
+                    "unity": "POSTO DE SAÚDE",
+                    "state": brazillianState(c.CO_UF),
+                    "neighborhood": c.NO_BAIRRO,
+                    "address": c.NO_LOGRADOURO,
+                    "phone": c.NU_TELEFONE,
+                    "time": shiftEntity(c.DS_TURNO_ATENDIMENTO),
+                    "listing": radius
+                })
+            }
+        }
+    })
+    prontoatendimento.map(c =>{
+        if(c.NO_FANTASIA != null){
+            latitude = c.NU_LATITUDE / Math.pow(10, 10)
+            longitude = c.NU_LONGITUDE / Math.pow(10, 10)
+            
+            if(((minLatitude <= latitude) && (latitude <= maxLatitude)) && ((minLongitude <= longitude) && (longitude <= maxLongitude))){
+                cnesList.push({
+                    "key": c.CO_CNES,
+                    "name": c.NO_FANTASIA,
+                    "unity": "UPA",
+                    "state": brazillianState(c.CO_UF),
+                    "neighborhood": c.NO_BAIRRO,
+                    "address": c.NO_LOGRADOURO,
+                    "phone": c.NU_TELEFONE,
+                    "time": shiftEntity(c.DS_TURNO_ATENDIMENTO),
+                    "listing": radius
+                })
+            }
+        }
+    })
+    prontosocorro.map(c =>{
+        if(c.NO_FANTASIA != null){
+            latitude = c.NU_LATITUDE / Math.pow(10, 10)
+            longitude = c.NU_LONGITUDE / Math.pow(10, 10)
+            
+            if(((minLatitude <= latitude) && (latitude <= maxLatitude)) && ((minLongitude <= longitude) && (longitude <= maxLongitude))){
+                cnesList.push({
+                    "key": c.CO_CNES,
+                    "name": c.NO_FANTASIA,
+                    "unity": "PRONTO SOCORRO",
+                    "state": brazillianState(c.CO_UF),
+                    "neighborhood": c.NO_BAIRRO,
+                    "address": c.NO_LOGRADOURO,
+                    "phone": c.NU_TELEFONE,
+                    "time": shiftEntity(c.DS_TURNO_ATENDIMENTO),
+                    "listing": radius
+                })
+            }
+        }
+    })
+    return cnesList
+}

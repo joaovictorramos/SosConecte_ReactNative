@@ -19,7 +19,9 @@ import card6 from './assets/images/icons/centro-de-saude.png'
 import card7 from './assets/images/icons/unidade-pronto-atendimento.png'
 import card8 from './assets/images/icons/caixa-de-primeiros-socorros.png'
 import card9 from './assets/images/icons/recem-nascido.png'
+import * as Location from 'expo-location'
 import { findByName, findBySpecificType } from './function/Service'; 
+import { setCoordinates } from './function/Localization';
 
 const Stack = createStackNavigator();
 let pickers = ['', '', '']
@@ -31,6 +33,8 @@ function MainScreen({ navigation }){
   const [modalVisible, setModalVisible] = useState(false);
 
   const [errorModalVisible, setErrorModalVisible] = useState(false);
+
+  const [notFoundLocalizationVisible, setNotFoundLocalizationVisible] = useState(false);
 
   const [selectedValue, setSelectedValue] = useState([]);
 
@@ -78,6 +82,25 @@ function MainScreen({ navigation }){
     pickers = ['', '', '']
   }
 
+  async function getLocationAsync(){
+    let { status } = await Location.requestForegroundPermissionsAsync()
+    if (status != 'granted'){
+      console.log('Permissão negada')
+      return;
+    }
+    console.log('Permissão aceita')
+    let location = await Location.getCurrentPositionAsync({})
+
+    let result = setCoordinates(location)
+    let isEmpty = (result.length == 2)
+
+    if(isEmpty){
+      setNotFoundLocalizationVisible(true)
+    }else{
+      navigation.navigate('ListingScreen', {result})
+    }
+  }
+
   return (
     <ImageBackground source={require('./assets/images/fundo.jpg')} resizeMode='cover' style={{flex: 1}}>
       <View style={styles.container}>
@@ -100,13 +123,23 @@ function MainScreen({ navigation }){
             <Text style={styles.buttonText}>Procurar</Text>
           </TouchableOpacity>
 
-          <Pressable
-            style={[stylesFilterScreen.button, stylesFilterScreen.buttonOpen]}
-            onPress={() => setModalVisible(true)}
-          >
-            <Ionicons name="filter" size={24} color="black" />
-            <Text style={stylesFilterScreen.textStyle}>Filtrar</Text>
-          </Pressable>
+          <View style={{ flexDirection: 'row' }}>
+            <Pressable
+              style={[stylesFilterScreen.button, stylesFilterScreen.buttonOpen]}
+              onPress={() => setModalVisible(true)}
+            >
+              <Ionicons name="filter" size={24} color="black" />
+              <Text style={stylesFilterScreen.textStyle}>Filtrar</Text>
+            </Pressable>
+
+            <Pressable
+              style={[stylesFilterScreen.button, stylesFilterScreen.buttonOpen]}
+              onPress={() => getLocationAsync()}
+            >
+              <Ionicons name="location-outline" size={24} color="black" />
+              <Text style={stylesFilterScreen.textStyle}>Geolocalização</Text>
+            </Pressable>
+          </View>
 
           <Modal
             animationType="slide"
@@ -227,6 +260,31 @@ function MainScreen({ navigation }){
                     </Pressable>
                   </View>
                 </Text>
+              </View>
+            </View>
+          </Modal>
+
+          <Modal 
+            animationType="slide"
+            transparent={true}
+            visible={notFoundLocalizationVisible}
+            onRequestClose={() => {
+              setNotFoundLocalizationVisible(!notFoundLocalizationVisible);
+            }}>
+            <View style={stylesFilterScreen.centeredView}>
+              <View style={stylesFilterScreen.modalView}>
+                <Text style={stylesFilterScreen.modalTextError}
+                >
+                  Nenhum estabelecimento foi encontrado!
+                </Text>
+                <View style={{ flexDirection: 'row' }}>
+                    <Pressable
+                      style={[stylesFilterScreen.buttonError, stylesFilterScreen.buttonCloseError]}
+                      onPress={() => setNotFoundLocalizationVisible(false)}
+                    >
+                      <Text style={stylesFilterScreen.textInternStyle}>Fechar</Text>
+                    </Pressable>
+                  </View>
               </View>
             </View>
           </Modal>
