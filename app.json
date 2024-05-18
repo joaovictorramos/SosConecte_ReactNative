@@ -1,15 +1,15 @@
 {
   "expo": {
-    "name": "sos-conecte",
+    "name": "SOS Conecte",
     "slug": "sos-conecte",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/icon-sosconecte.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/images/logo/logo-sosconecte.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#c4ffff"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -19,8 +19,8 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/icon-sosconecte.png",
+        "backgroundColor": "#c4ffff"
       },
       "package": "com.joaoramos.sosconecte"
     },
