@@ -251,15 +251,15 @@ function MainScreen({ navigation }){
                 <Text style={stylesFilterScreen.modalTextError}
                 >
                   Estabelecimento não encontrado! Utilize caracteres SEM acentuação
-                  <View style={{ flexDirection: 'row' }}>
+                </Text>
+                <View style={{ flexDirection: 'row' }}>
                     <Pressable
                       style={[stylesFilterScreen.buttonError, stylesFilterScreen.buttonCloseError]}
                       onPress={() => setErrorModalVisible(false)}
                     >
                       <Text style={stylesFilterScreen.textInternStyle}>Fechar</Text>
                     </Pressable>
-                  </View>
-                </Text>
+                </View>
               </View>
             </View>
           </Modal>
