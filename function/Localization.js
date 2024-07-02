@@ -1,5 +1,13 @@
 import { findByLatitudeAndLongitude } from "./Service"
 
+export const setDistance = (location, metter) =>{
+    if (metter != ""){
+        return setCoordinates(location, Number(metter))
+    }else{
+        return setCoordinates(location)
+    }
+}
+
 export const getDestination = (userLatitude, userLongitude, azimuth, distance) =>{
     let radius = 6371
     let delta = Number(distance) / radius
@@ -15,10 +23,11 @@ export const getDestination = (userLatitude, userLongitude, azimuth, distance) =
     return [phi2 * 180 / Math.PI, lambda2 * 180 / Math.PI]
 }
 
-export const setCoordinates = (location) =>{
+export const setCoordinates = (location, distance=10) =>{
     let userLatitude = location.coords.latitude
     let userLongitude = location.coords.longitude
-    let distance = 10    // Raio de 10Km
+    console.log(`Latitude: ${userLatitude}`)
+    console.log(`Distância: ${distance}`)
 
     let latlist = []
     let lonlist = []

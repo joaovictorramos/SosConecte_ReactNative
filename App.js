@@ -21,7 +21,7 @@ import card8 from './assets/images/icons/caixa-de-primeiros-socorros.png'
 import card9 from './assets/images/icons/recem-nascido.png'
 import * as Location from 'expo-location'
 import { findByName, findBySpecificType } from './function/Service'; 
-import { setCoordinates } from './function/Localization';
+import { setCoordinates, setDistance } from './function/Localization';
 
 const Stack = createStackNavigator();
 let pickers = ['', '', '']
@@ -31,6 +31,10 @@ function MainScreen({ navigation }){
   const [value, setValue] = useState('');
 
   const [modalVisible, setModalVisible] = useState(false);
+
+  const [isPickerVisible, setPickerVisible] = useState(false);
+
+  const [isListingVisible, setListingVisible] = useState(false);
 
   const [errorModalVisible, setErrorModalVisible] = useState(false);
 
@@ -78,7 +82,8 @@ function MainScreen({ navigation }){
 
   const handleGridItems = (index) => {
     const result = findBySpecificType(index)
-    navigation.navigate('ListingScreen', {result})
+    setListingVisible(true)
+    navigation.navigate('ListingScreen', {result, isListingVisible})
     pickers = ['', '', '']
   }
 
@@ -97,7 +102,8 @@ function MainScreen({ navigation }){
     if(isEmpty){
       setNotFoundLocalizationVisible(true)
     }else{
-      navigation.navigate('ListingScreen', {result})
+      setPickerVisible(true)
+      navigation.navigate('ListingScreen', {result, location, isPickerVisible})
     }
   }
 
@@ -305,7 +311,22 @@ function MainScreen({ navigation }){
 
 function ListingScreen({ route, navigation }){
   let responseJson = JSON.parse(route.params.result)
+  let isPickerVisible = route.params.isPickerVisible
+  let isListingVisible = route.params.isListingVisible
+
+  let location = route.params.location
   let listingValue = responseJson[0]['listing']
+
+  const [data, setData] = useState(responseJson)
+  const [selectedMileageValue, setSelectMileageValue] = useState("")
+
+  const latlonMeters = (metter) => {
+    if (metter != "") {
+      respUpdateJson = JSON.parse(setDistance(location, metter))
+      setData(respUpdateJson)
+    }
+  }
+
   return (
     <View style={stylesListingScreen.listingContainer}>
       <View style={stylesListingScreen.logoContainer}>
@@ -315,13 +336,38 @@ function ListingScreen({ route, navigation }){
         />
       </View>
       <View style={stylesListingScreen.textContainer}>
-        <Text style={{ fontSize: 18, fontWeight: 'bold' }}>
+        {isListingVisible && (
+        <Text style={{ fontSize: 18, fontWeight: 'bold', marginLeft: 10, marginTop: 10 }}>
           Listagem: {listingValue}
         </Text>
+        )}
+
+        {isPickerVisible && (
+        <Picker
+          selectedValue={selectedMileageValue}
+          style={{ height: 30, width: 180, paddingRight: 20 }}
+          onValueChange={(itemValue, itemIndex) => {
+            latlonMeters(itemValue)
+            setSelectMileageValue(itemValue)
+          }}
+        >
+          <Picker.Item style={{ fontSize: 18 }} label="Quilômetros" value="" />
+          <Picker.Item style={{ fontSize: 18 }} label="1 Km" value="1" />
+          <Picker.Item style={{ fontSize: 18 }} label="2 Km" value="2" />
+          <Picker.Item style={{ fontSize: 18 }} label="3 Km" value="3" />
+          <Picker.Item style={{ fontSize: 18 }} label="4 Km" value="4" />
+          <Picker.Item style={{ fontSize: 18 }} label="5 Km" value="5" />
+          <Picker.Item style={{ fontSize: 18 }} label="6 Km" value="6" />
+          <Picker.Item style={{ fontSize: 18 }} label="7 Km" value="7" />
+          <Picker.Item style={{ fontSize: 18 }} label="8 Km" value="8" />
+          <Picker.Item style={{ fontSize: 18 }} label="9 Km" value="9" />
+          <Picker.Item style={{ fontSize: 18 }} label="10 Km" value="10" />
+        </Picker>
+        )}
       </View>
-      <View style={{marginTop: 215, paddingLeft: 20, paddingRight: 20}} >
+      <View style={{marginTop: 220, paddingLeft: 20, paddingRight: 20}} >
         <FlatList
-          data={responseJson} style={{ height: '100%' }}
+          data={data} style={{ height: '100%' }}
           renderItem={({item, index}) => (
             <TouchableOpacity 
               key={`${item.name}-${index}`}
@@ -556,7 +602,8 @@ const stylesListingScreen = StyleSheet.create({
     top: 170,
     left: 10,
     width: '100%',
-    padding: 10,
+    marginRight: 40,
+    paddingRight: 10,
     alignItems: 'flex-start',
   }
 });
