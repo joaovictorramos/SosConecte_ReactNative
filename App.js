@@ -80,11 +80,13 @@ function MainScreen({ navigation }){
     console.log(pickers)
   }
 
-  const handleGridItems = (index) => {
+  const handleGridItems = async (index) => {
     const result = findBySpecificType(index)
     setListingVisible(true)
-    navigation.navigate('ListingScreen', {result, isListingVisible})
-    pickers = ['', '', '']
+    setTimeout(() => {
+      navigation.navigate('ListingScreen', {result, isListingVisible: true})
+      pickers = ['', '', '']
+    }, 0)
   }
 
   async function getLocationAsync(){
@@ -103,7 +105,7 @@ function MainScreen({ navigation }){
       setNotFoundLocalizationVisible(true)
     }else{
       setPickerVisible(true)
-      navigation.navigate('ListingScreen', {result, location, isPickerVisible})
+      navigation.navigate('ListingScreen', {result, location, isPickerVisible: true})
     }
   }
 
